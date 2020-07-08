@@ -1,0 +1,3 @@
+WINDOW_TITLE  VisualMusic (by Deesthortered and Stan)
+WINDOW_HEIGHT 600
+WINDOW_WIDTH  800

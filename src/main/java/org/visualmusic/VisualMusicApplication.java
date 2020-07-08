@@ -17,12 +17,11 @@ import java.io.File;
 
 public class VisualMusicApplication extends Application {
     public static void main(String[] args) {
+        ConfigurationManager.getInstance();
         launch(args);
     }
 
-    private static final String WINDOW_TITLE = "VisualMusic (by Deesthortered and Stan)";
-    private static final int WINDOW_HEIGHT = 600;
-    private static final int WINDOW_WIDTH  = 800;
+    private ConfigurationManager configurationManager;
 
     private static final int LOADED_IMAGE_FIXED_WIDTH  = 700;
     private static final int LOADED_IMAGE_FIXED_HEIGHT = 400;
@@ -32,16 +31,17 @@ public class VisualMusicApplication extends Application {
 
     @Override
     public void start(Stage primaryStage) {
+        configurationManager = ConfigurationManager.getInstance();
         loadDefaultImage();
 
-        Scene scene = new Scene(makeMainPane(), WINDOW_WIDTH, WINDOW_HEIGHT);
+        Scene scene = new Scene(makeMainPane(), configurationManager.getWINDOW_WIDTH(), configurationManager.getWINDOW_HEIGHT());
         primaryStage.setScene(scene);
-        primaryStage.setTitle(WINDOW_TITLE);
+        primaryStage.setTitle(configurationManager.getWINDOW_TITLE());
         primaryStage.show();
     }
 
     private void loadDefaultImage() {
-        String path = "default_image.png";
+        String path = "resources/default_image.png";
         File file = new File(path);
         defaultImage = new Image(file.toURI().toString(), LOADED_IMAGE_FIXED_WIDTH, LOADED_IMAGE_FIXED_HEIGHT, false, true, false);
     }

@@ -2,7 +2,7 @@ plugins {
     id 'java'
 }
 
-group 'org.example'
+group 'org.visualmusic'
 version '1.0-SNAPSHOT'
 
 repositories {
@@ -10,6 +10,5 @@ repositories {
 }
 
 dependencies {
-    compile group: 'net.imagej', name: 'ij', version: '1.53c'
     testCompile group: 'org.testng', name: 'testng', version: '7.1.0'
 }
