@@ -9,6 +9,8 @@
 # VALUE will be whole string after space
 # You can use more than 1 space between PARAMETER_NAME and VALUE
 #
-WINDOW_TITLE  VisualMusic (by Deesthortered and Stan)
 WINDOW_HEIGHT 600
-WINDOW_WIDTH  800
+WINDOW_WIDTH 800
+LOADED_IMAGE_FIXED_WIDTH 700
+LOADED_IMAGE_FIXED_HEIGHT 400
+PATH_DEFAULT_IMAGE resources/default_image.png

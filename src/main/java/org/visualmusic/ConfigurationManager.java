@@ -27,7 +27,9 @@ public class ConfigurationManager {
     private String WINDOW_TITLE;
     private int WINDOW_HEIGHT;
     private int WINDOW_WIDTH;
-
+    private int LOADED_IMAGE_FIXED_WIDTH;
+    private int LOADED_IMAGE_FIXED_HEIGHT;
+    private String PATH_DEFAULT_IMAGE;
 
     // Thread-safe singleton pattern
 
@@ -70,6 +72,9 @@ public class ConfigurationManager {
         this.WINDOW_TITLE  = "VisualMusic (by Deesthortered and Stan)";
         this.WINDOW_HEIGHT = 600;
         this.WINDOW_WIDTH  = 800;
+        this.LOADED_IMAGE_FIXED_WIDTH  = 700;
+        this.LOADED_IMAGE_FIXED_HEIGHT = 400;
+        this.PATH_DEFAULT_IMAGE = "resources/default_image.png";
     }
 
     private void saveDefaultConfigurations() throws IOException {
@@ -92,6 +97,9 @@ public class ConfigurationManager {
         writer.println("WINDOW_TITLE " + WINDOW_TITLE);
         writer.println("WINDOW_HEIGHT " + WINDOW_HEIGHT);
         writer.println("WINDOW_WIDTH " + WINDOW_WIDTH);
+        writer.println("LOADED_IMAGE_FIXED_WIDTH " + LOADED_IMAGE_FIXED_WIDTH);
+        writer.println("LOADED_IMAGE_FIXED_HEIGHT " + LOADED_IMAGE_FIXED_HEIGHT);
+        writer.println("PATH_DEFAULT_IMAGE " + PATH_DEFAULT_IMAGE);
 
         writer.close();
     }
@@ -107,9 +115,12 @@ public class ConfigurationManager {
         dataMap.put("#", null);
 
         try {
-            this.WINDOW_TITLE  = dataMap.get("WINDOW_TITLE");
+            this.WINDOW_TITLE = dataMap.get("WINDOW_TITLE");
             this.WINDOW_HEIGHT = Integer.parseInt(dataMap.get("WINDOW_HEIGHT"));
-            this.WINDOW_WIDTH  = Integer.parseInt(dataMap.get("WINDOW_WIDTH"));
+            this.WINDOW_WIDTH = Integer.parseInt(dataMap.get("WINDOW_WIDTH"));
+            this.LOADED_IMAGE_FIXED_WIDTH = Integer.parseInt(dataMap.get("LOADED_IMAGE_FIXED_WIDTH"));
+            this.LOADED_IMAGE_FIXED_HEIGHT = Integer.parseInt(dataMap.get("LOADED_IMAGE_FIXED_HEIGHT"));
+            this.PATH_DEFAULT_IMAGE = dataMap.get("PATH_DEFAULT_IMAGE");
         } catch (Exception e) {
             throw new IOException("Setting read value from map is failed!");
         }
@@ -127,5 +138,17 @@ public class ConfigurationManager {
 
     public int getWINDOW_WIDTH() {
         return WINDOW_WIDTH;
+    }
+
+    public int getLOADED_IMAGE_FIXED_HEIGHT() {
+        return LOADED_IMAGE_FIXED_HEIGHT;
+    }
+
+    public int getLOADED_IMAGE_FIXED_WIDTH() {
+        return LOADED_IMAGE_FIXED_WIDTH;
+    }
+
+    public String getPATH_DEFAULT_IMAGE() {
+        return PATH_DEFAULT_IMAGE;
     }
 }

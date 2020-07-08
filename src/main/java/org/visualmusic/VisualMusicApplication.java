@@ -23,9 +23,6 @@ public class VisualMusicApplication extends Application {
 
     private ConfigurationManager configurationManager;
 
-    private static final int LOADED_IMAGE_FIXED_WIDTH  = 700;
-    private static final int LOADED_IMAGE_FIXED_HEIGHT = 400;
-
     private Image defaultImage;
     private Image loadedImage;
 
@@ -41,9 +38,12 @@ public class VisualMusicApplication extends Application {
     }
 
     private void loadDefaultImage() {
-        String path = "resources/default_image.png";
-        File file = new File(path);
-        defaultImage = new Image(file.toURI().toString(), LOADED_IMAGE_FIXED_WIDTH, LOADED_IMAGE_FIXED_HEIGHT, false, true, false);
+        File file = new File(configurationManager.getPATH_DEFAULT_IMAGE());
+        defaultImage = new Image(
+                file.toURI().toString(),
+                configurationManager.getLOADED_IMAGE_FIXED_WIDTH(),
+                configurationManager.getLOADED_IMAGE_FIXED_HEIGHT(),
+                false, true, false);
     }
 
     private Pane makeLoadImagePane() {
@@ -83,7 +83,11 @@ public class VisualMusicApplication extends Application {
         Pane pane = new StackPane();
 
         String website = "https://www.w3schools.com/w3css/img_lights.jpg";
-        Image image = new Image(website, LOADED_IMAGE_FIXED_WIDTH, LOADED_IMAGE_FIXED_HEIGHT, false, true, false);
+        Image image = new Image(
+                website,
+                configurationManager.getLOADED_IMAGE_FIXED_WIDTH(),
+                configurationManager.getLOADED_IMAGE_FIXED_HEIGHT(),
+                false, true, false);
 
         ImageView imageView = new ImageView(image);
         pane.getChildren().add(imageView);
