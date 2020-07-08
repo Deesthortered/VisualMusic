@@ -1,3 +1,14 @@
+# Configuration file
+#
+# You can leave comments like this - first symbol of string must be # and second symbol must be Space.
+# You can't leave empty strings!
+#
+# Syntax is "PARAMETER_NAME VALUE"
+# PARAMETER_NAME is always one word
+# Space after PARAMETER_NAME is mandatory
+# VALUE will be whole string after space
+# You can use more than 1 space between PARAMETER_NAME and VALUE
+#
 WINDOW_TITLE  VisualMusic (by Deesthortered and Stan)
 WINDOW_HEIGHT 600
 WINDOW_WIDTH  800

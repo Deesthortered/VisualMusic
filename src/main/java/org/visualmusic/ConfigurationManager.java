@@ -61,6 +61,7 @@ public class ConfigurationManager {
         while (scanner.hasNext()) {
             dataMap.put(scanner.next().trim(), scanner.nextLine().trim());
         }
+        dataMap.put("#", null);
 
         try {
             this.WINDOW_TITLE  = dataMap.get("WINDOW_TITLE");
