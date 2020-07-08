@@ -20,6 +20,9 @@ import javafx.stage.Stage;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 
 public class VisualMusicApplication extends Application implements EventHandler<Event> {
@@ -39,8 +42,11 @@ public class VisualMusicApplication extends Application implements EventHandler<
     private TextField textPathToImageFile;
     private TextField textURLToImageFile;
 
+    private ImageView displayedImageView;
+
     private Image defaultImage;
-    private Image loadedImage;
+    private Image loadedDisplayedImage;
+    private Image loadedOriginalImage;
 
     @Override
     public void start(Stage primaryStage) {
@@ -133,11 +139,11 @@ public class VisualMusicApplication extends Application implements EventHandler<
     private Pane makeShowImagePane() {
         Pane pane = new StackPane();
 
-        String website = "https://www.w3schools.com/w3css/img_lights.jpg";
-        Image image = applicationService.getImageByURL(website, false);
+//        String website = "https://www.w3schools.com/w3css/img_lights.jpg";
+//        Image image = applicationService.getImageByURL(website, false);
 
-        ImageView imageView = new ImageView(image);
-        pane.getChildren().add(imageView);
+        displayedImageView = new ImageView(defaultImage);
+        pane.getChildren().add(displayedImageView);
 
         return pane;
     }
@@ -175,16 +181,58 @@ public class VisualMusicApplication extends Application implements EventHandler<
         fileChooser.getExtensionFilters().add(fileAllExtensions);
 
         File file = fileChooser.showOpenDialog(this.mainStage);
+        String path = file.toURI().toString();
+        path = path.substring(path.indexOf('/') + 1);
+        path = path.replace("%20", " ");
+
         if (file != null) {
-            textPathToImageFile.setText(file.toURI().toString());
+            textPathToImageFile.setText(path);
         }
     }
 
     public void handleButtonLoadFromFile() {
+        try {
+            String path = this.textPathToImageFile.getText();
+            if (path.equals("")) {
+                throw new Exception("Path is empty.");
+            }
 
+            File file = new File(path);
+            if (!file.exists() || !file.isFile()) {
+                throw new IOException("File is not found by the path: " + path);
+            }
+
+            Set<String> possibleExtensions = new HashSet<>(Arrays.asList("png", "jpg"));
+            String extension = path.substring(path.lastIndexOf(".") + 1);
+
+            if (!possibleExtensions.contains(extension)) {
+                throw new Exception("File extension \"" + extension + "\" is not supported.");
+            }
+            this.loadedDisplayedImage = applicationService.getImageFromFile(path, false);
+            this.loadedOriginalImage = applicationService.getImageFromFile(path, true);
+
+            changeDisplayedImage(this.loadedDisplayedImage);
+
+        } catch (IOException e) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Mistake!");
+            alert.setHeaderText("File is not found.");
+            alert.setContentText("Exception message: " + e.getMessage());
+            alert.showAndWait();
+        } catch (Exception e) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Mistake!");
+            alert.setHeaderText("You can't choose the file.");
+            alert.setContentText("Exception message: " + e.getMessage());
+            alert.showAndWait();
+        }
     }
 
     public void handleButtonLoadFromURL() {
 
+    }
+
+    public void changeDisplayedImage(Image image) {
+        displayedImageView.setImage(image);
     }
 }
