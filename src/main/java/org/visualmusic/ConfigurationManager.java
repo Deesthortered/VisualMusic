@@ -70,10 +70,10 @@ public class ConfigurationManager {
 
     private void loadDefaultConfigurations() {
         this.WINDOW_TITLE  = "VisualMusic (by Deesthortered and Stan)";
-        this.WINDOW_HEIGHT = 600;
-        this.WINDOW_WIDTH  = 800;
-        this.LOADED_IMAGE_FIXED_WIDTH  = 700;
-        this.LOADED_IMAGE_FIXED_HEIGHT = 400;
+        this.WINDOW_HEIGHT = 760;
+        this.WINDOW_WIDTH  = 1100;
+        this.LOADED_IMAGE_FIXED_WIDTH  = 1100;
+        this.LOADED_IMAGE_FIXED_HEIGHT = 680;
         this.PATH_DEFAULT_IMAGE = "resources/default_image.png";
     }
 

@@ -181,11 +181,10 @@ public class VisualMusicApplication extends Application implements EventHandler<
         fileChooser.getExtensionFilters().add(fileAllExtensions);
 
         File file = fileChooser.showOpenDialog(this.mainStage);
-        String path = file.toURI().toString();
-        path = path.substring(path.indexOf('/') + 1);
-        path = path.replace("%20", " ");
-
         if (file != null) {
+            String path = file.toURI().toString();
+            path = path.substring(path.indexOf('/') + 1);
+            path = path.replace("%20", " ");
             textPathToImageFile.setText(path);
         }
     }
@@ -229,7 +228,23 @@ public class VisualMusicApplication extends Application implements EventHandler<
     }
 
     public void handleButtonLoadFromURL() {
+        try {
+            String website = this.textURLToImageFile.getText();
+            if (website.equals("")) {
+                throw new Exception("URL is empty.");
+            }
 
+            this.loadedDisplayedImage = applicationService.getImageByURL(website, false);
+            this.loadedOriginalImage = applicationService.getImageByURL(website, true);
+
+            changeDisplayedImage(this.loadedDisplayedImage);
+        } catch (Exception e) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Mistake!");
+            alert.setHeaderText("Can't load the file.");
+            alert.setContentText("Exception message: " + e.getMessage());
+            alert.showAndWait();
+        }
     }
 
     public void changeDisplayedImage(Image image) {
