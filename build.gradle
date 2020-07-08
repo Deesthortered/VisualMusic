@@ -1,0 +1,15 @@
+plugins {
+    id 'java'
+}
+
+group 'org.example'
+version '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile group: 'net.imagej', name: 'ij', version: '1.53c'
+    testCompile group: 'org.testng', name: 'testng', version: '7.1.0'
+}
