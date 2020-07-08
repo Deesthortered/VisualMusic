@@ -15,7 +15,7 @@ public class ConfigurationManager {
             "# Configuration file\n" +
             "#\n" +
             "# You can leave comments like this - first symbol of string must be # and second symbol must be Space.\n" +
-            "# You can't leave empty strings!\n" +
+            "# You can leave empty strings\n" +
             "#\n" +
             "# Syntax is \"PARAMETER_NAME VALUE\"\n" +
             "# PARAMETER_NAME is always one word\n" +
@@ -112,18 +112,24 @@ public class ConfigurationManager {
         while (scanner.hasNext()) {
             dataMap.put(scanner.next().trim(), scanner.nextLine().trim());
         }
-        dataMap.put("#", null);
+        dataMap.remove("#");
 
         try {
-            this.WINDOW_TITLE = dataMap.get("WINDOW_TITLE");
-            this.WINDOW_HEIGHT = Integer.parseInt(dataMap.get("WINDOW_HEIGHT"));
-            this.WINDOW_WIDTH = Integer.parseInt(dataMap.get("WINDOW_WIDTH"));
-            this.LOADED_IMAGE_FIXED_WIDTH = Integer.parseInt(dataMap.get("LOADED_IMAGE_FIXED_WIDTH"));
-            this.LOADED_IMAGE_FIXED_HEIGHT = Integer.parseInt(dataMap.get("LOADED_IMAGE_FIXED_HEIGHT"));
-            this.PATH_DEFAULT_IMAGE = dataMap.get("PATH_DEFAULT_IMAGE");
+            this.WINDOW_TITLE = validateConfigurationValue(dataMap.get("WINDOW_TITLE"));
+            this.WINDOW_HEIGHT = Integer.parseInt(validateConfigurationValue(dataMap.get("WINDOW_HEIGHT")));
+            this.WINDOW_WIDTH = Integer.parseInt(validateConfigurationValue(dataMap.get("WINDOW_WIDTH")));
+            this.LOADED_IMAGE_FIXED_WIDTH = Integer.parseInt(validateConfigurationValue(dataMap.get("LOADED_IMAGE_FIXED_WIDTH")));
+            this.LOADED_IMAGE_FIXED_HEIGHT = Integer.parseInt(validateConfigurationValue(dataMap.get("LOADED_IMAGE_FIXED_HEIGHT")));
+            this.PATH_DEFAULT_IMAGE = validateConfigurationValue(dataMap.get("PATH_DEFAULT_IMAGE"));
         } catch (Exception e) {
             throw new IOException("Setting read value from map is failed!");
         }
+    }
+
+    private String validateConfigurationValue(String value) throws IOException {
+        if (value == null || value.equals("") || value.equals("\n"))
+            throw new IOException("Configuration value is not valid!");
+        return value;
     }
 
     // Getters
