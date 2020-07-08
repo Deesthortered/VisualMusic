@@ -1,6 +1,7 @@
 package org.visualmusic;
 
 import javafx.application.Application;
+import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
@@ -12,7 +13,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-import java.io.File;
+import java.io.IOException;
 
 
 public class VisualMusicApplication extends Application {
@@ -22,6 +23,7 @@ public class VisualMusicApplication extends Application {
     }
 
     private ConfigurationManager configurationManager;
+    private ApplicationService applicationService;
 
     private Image defaultImage;
     private Image loadedImage;
@@ -29,24 +31,31 @@ public class VisualMusicApplication extends Application {
     @Override
     public void start(Stage primaryStage) {
         configurationManager = ConfigurationManager.getInstance();
+        applicationService = ApplicationService.getInstance();
         loadDefaultImage();
 
         Scene scene = new Scene(makeMainPane(), configurationManager.getWINDOW_WIDTH(), configurationManager.getWINDOW_HEIGHT());
         primaryStage.setScene(scene);
         primaryStage.setTitle(configurationManager.getWINDOW_TITLE());
+        primaryStage.setResizable(false);
         primaryStage.show();
     }
 
     private void loadDefaultImage() {
-        File file = new File(configurationManager.getPATH_DEFAULT_IMAGE());
-        defaultImage = new Image(
-                file.toURI().toString(),
-                configurationManager.getLOADED_IMAGE_FIXED_WIDTH(),
-                configurationManager.getLOADED_IMAGE_FIXED_HEIGHT(),
-                false, true, false);
+        try {
+            defaultImage = applicationService.getImageFromFile(
+                    configurationManager.getPATH_DEFAULT_IMAGE(),
+                    false);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private Pane makeLoadImagePane() {
+        int buttonWidth = 150;
+        int buttonBrowseWidth = 70;
+        int padding = 5;
+
         VBox paneButtonBox = new VBox();
         VBox paneTextFieldsBox = new VBox();
 
@@ -55,6 +64,7 @@ public class VisualMusicApplication extends Application {
 
         Button buttonLoadFromFile = new Button("Load image from file");
         paneButtonBox.getChildren().add(buttonLoadFromFile);
+        buttonLoadFromFile.setMinWidth(buttonWidth);
         buttonLoadFromFile.pressedProperty().addListener((observable, wasPressed, pressed) -> {
             if (wasPressed) {
                 System.out.println("wasPressed");
@@ -63,18 +73,39 @@ public class VisualMusicApplication extends Application {
 
         Button buttonLoadFromURL = new Button("Load image from URL");
         paneButtonBox.getChildren().add(buttonLoadFromURL);
+        buttonLoadFromURL.setMinWidth(buttonWidth);
         buttonLoadFromURL.pressedProperty().addListener((observable, wasPressed, pressed) -> {
             if (wasPressed) {
                 System.out.println("wasPressed");
             }
         });
 
+        HBox boxFilePath = new HBox();
+        paneTextFieldsBox.getChildren().add(boxFilePath);
+
+        Button buttonOpenFileDialog = new Button("Browse");
+        boxFilePath.getChildren().add(buttonOpenFileDialog);
+        buttonOpenFileDialog.setMinWidth(buttonBrowseWidth);
+        buttonOpenFileDialog.pressedProperty().addListener((observable, wasPressed, pressed) -> {
+            if (wasPressed) {
+                System.out.println("wasPressed");
+            }
+        });
 
         TextField textPathToImageFile = new TextField();
-        paneTextFieldsBox.getChildren().add(textPathToImageFile);
+        boxFilePath.getChildren().add(textPathToImageFile);
+        textPathToImageFile.setMinWidth(configurationManager.getWINDOW_WIDTH() - buttonWidth - buttonBrowseWidth - 30);
+        textPathToImageFile.setMaxWidth(configurationManager.getWINDOW_WIDTH() - buttonWidth - buttonBrowseWidth - 30);
 
         TextField textURLToImageFile = new TextField();
         paneTextFieldsBox.getChildren().add(textURLToImageFile);
+        textURLToImageFile.setMinWidth(configurationManager.getWINDOW_WIDTH() - buttonWidth - 30);
+        textURLToImageFile.setMaxWidth(configurationManager.getWINDOW_WIDTH() - buttonWidth - 30);
+
+        paneButtonBox.setPadding(new Insets(padding,padding,padding,padding));
+        paneTextFieldsBox.setPadding(new Insets(padding,padding,padding,0));
+
+        paneButtonBox.setPadding(new Insets(padding,padding,padding,padding));
 
         return paneSummaryBox;
     }
@@ -83,11 +114,7 @@ public class VisualMusicApplication extends Application {
         Pane pane = new StackPane();
 
         String website = "https://www.w3schools.com/w3css/img_lights.jpg";
-        Image image = new Image(
-                website,
-                configurationManager.getLOADED_IMAGE_FIXED_WIDTH(),
-                configurationManager.getLOADED_IMAGE_FIXED_HEIGHT(),
-                false, true, false);
+        Image image = applicationService.getImageByURL(website, false);
 
         ImageView imageView = new ImageView(image);
         pane.getChildren().add(imageView);
