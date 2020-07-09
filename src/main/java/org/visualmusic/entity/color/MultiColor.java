@@ -1,8 +1,11 @@
-package org.visualmusic.color;
+package org.visualmusic.entity.color;
 
+import javafx.scene.paint.Color;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NonNull;
 
+@EqualsAndHashCode
 public class MultiColor {
     @Getter
     private ColorRGB colorRGB;
@@ -49,6 +52,14 @@ public class MultiColor {
         this.colorCMY = new ColorCMY(MultiColor.fromRGBtoCMY(this.colorRGB));
         this.colorCMYK = new ColorCMYK(MultiColor.fromRGBtoCMYK(this.colorRGB));
         this.colorHSV = new ColorHSV(MultiColor.fromRGBtoHSV(this.colorRGB));
+    }
+
+    public MultiColor(@NonNull Color javafxColor) {
+        // Need to convert interval of values
+        javafxColor.getRed();
+        javafxColor.getGreen();
+        javafxColor.getBlue();
+
     }
 
 

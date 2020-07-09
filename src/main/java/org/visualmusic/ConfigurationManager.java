@@ -1,5 +1,7 @@
 package org.visualmusic;
 
+import lombok.Getter;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -13,22 +15,28 @@ public class ConfigurationManager {
     private final String configurationFilePath = "resources/configurations.txt";
     private final String configurationFilePreamble =
             "# Configuration file\n" +
-            "#\n" +
-            "# You can leave comments like this - first symbol of string must be # and second symbol must be Space.\n" +
-            "# You can leave empty strings\n" +
-            "#\n" +
-            "# Syntax is \"PARAMETER_NAME VALUE\"\n" +
-            "# PARAMETER_NAME is always one word\n" +
-            "# Space after PARAMETER_NAME is mandatory\n" +
-            "# VALUE will be whole string after space\n" +
-            "# You can use more than 1 space between PARAMETER_NAME and VALUE\n" +
-            "#";
+                    "#\n" +
+                    "# You can leave comments like this - first symbol of string must be # and second symbol must be Space.\n" +
+                    "# You can leave empty strings\n" +
+                    "#\n" +
+                    "# Syntax is \"PARAMETER_NAME VALUE\"\n" +
+                    "# PARAMETER_NAME is always one word\n" +
+                    "# Space after PARAMETER_NAME is mandatory\n" +
+                    "# VALUE will be whole string after space\n" +
+                    "# You can use more than 1 space between PARAMETER_NAME and VALUE\n" +
+                    "#";
 
+    @Getter
     private String WINDOW_TITLE;
+    @Getter
     private int WINDOW_HEIGHT;
+    @Getter
     private int WINDOW_WIDTH;
+    @Getter
     private int LOADED_IMAGE_FIXED_WIDTH;
+    @Getter
     private int LOADED_IMAGE_FIXED_HEIGHT;
+    @Getter
     private String PATH_DEFAULT_IMAGE;
 
     // Thread-safe singleton pattern
@@ -69,10 +77,10 @@ public class ConfigurationManager {
     }
 
     private void loadDefaultConfigurations() {
-        this.WINDOW_TITLE  = "VisualMusic (by Deesthortered and Stan)";
+        this.WINDOW_TITLE = "VisualMusic (by Deesthortered and Stan)";
         this.WINDOW_HEIGHT = 760;
-        this.WINDOW_WIDTH  = 1100;
-        this.LOADED_IMAGE_FIXED_WIDTH  = 1100;
+        this.WINDOW_WIDTH = 1100;
+        this.LOADED_IMAGE_FIXED_WIDTH = 1100;
         this.LOADED_IMAGE_FIXED_HEIGHT = 680;
         this.PATH_DEFAULT_IMAGE = "resources/default_image.png";
     }
@@ -83,7 +91,7 @@ public class ConfigurationManager {
         for (int i = 0; i < pathElements.length - 1; i++) {
             currentPath += "/" + pathElements[i];
             File currentDirectory = new File(currentPath);
-            if (!currentDirectory.exists()){
+            if (!currentDirectory.exists()) {
                 if (!currentDirectory.mkdir()) {
                     throw new IOException("Cant create directory " + currentDirectory);
                 }
@@ -130,31 +138,5 @@ public class ConfigurationManager {
         if (value == null || value.equals("") || value.equals("\n"))
             throw new IOException("Configuration value is not valid!");
         return value;
-    }
-
-    // Getters
-
-    public String getWINDOW_TITLE() {
-        return WINDOW_TITLE;
-    }
-
-    public int getWINDOW_HEIGHT() {
-        return WINDOW_HEIGHT;
-    }
-
-    public int getWINDOW_WIDTH() {
-        return WINDOW_WIDTH;
-    }
-
-    public int getLOADED_IMAGE_FIXED_HEIGHT() {
-        return LOADED_IMAGE_FIXED_HEIGHT;
-    }
-
-    public int getLOADED_IMAGE_FIXED_WIDTH() {
-        return LOADED_IMAGE_FIXED_WIDTH;
-    }
-
-    public String getPATH_DEFAULT_IMAGE() {
-        return PATH_DEFAULT_IMAGE;
     }
 }

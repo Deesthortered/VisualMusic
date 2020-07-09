@@ -1,9 +1,11 @@
-package org.visualmusic.color;
+package org.visualmusic.entity.color;
 
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.With;
 
+@EqualsAndHashCode
 public class ColorHSV {
     @With @Getter
     private int hue;        // H
