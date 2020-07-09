@@ -45,6 +45,7 @@ public class VisualMusicApplication extends Application implements EventHandler<
     private CheckBox checkScaleDisplayedImage;
 
     private ImageView displayedImageView;
+    private Button buttonProceedImage;
 
     private Image defaultImage;
     private Image loadedDisplayedImage;
@@ -95,6 +96,8 @@ public class VisualMusicApplication extends Application implements EventHandler<
         int buttonWidth = 150;
         int buttonBrowseWidth = 70;
         int padding = 5;
+        int buttonProceedImageWidth = 100;
+        int buttonProceedImageHeight = 60;
 
         VBox paneButtonBox = new VBox();
         VBox paneTextFieldsBox = new VBox();
@@ -126,16 +129,25 @@ public class VisualMusicApplication extends Application implements EventHandler<
 
         textPathToImageFile = new TextField();
         boxFilePath.getChildren().add(textPathToImageFile);
-        textPathToImageFile.setMinWidth(configurationManager.getWINDOW_WIDTH() - buttonWidth - buttonBrowseWidth - 30);
-        textPathToImageFile.setMaxWidth(configurationManager.getWINDOW_WIDTH() - buttonWidth - buttonBrowseWidth - 30);
+        textPathToImageFile.setMinWidth(configurationManager.getWINDOW_WIDTH() - buttonWidth - buttonBrowseWidth - 20 - buttonProceedImageWidth);
+        textPathToImageFile.setMaxWidth(configurationManager.getWINDOW_WIDTH() - buttonWidth - buttonBrowseWidth - 20 - buttonProceedImageWidth);
 
         textURLToImageFile = new TextField();
         paneTextFieldsBox.getChildren().add(textURLToImageFile);
-        textURLToImageFile.setMinWidth(configurationManager.getWINDOW_WIDTH() - buttonWidth - 30);
-        textURLToImageFile.setMaxWidth(configurationManager.getWINDOW_WIDTH() - buttonWidth - 30);
+        textURLToImageFile.setMinWidth(configurationManager.getWINDOW_WIDTH() - buttonWidth - 20 - buttonProceedImageWidth);
+        textURLToImageFile.setMaxWidth(configurationManager.getWINDOW_WIDTH() - buttonWidth - 20 - buttonProceedImageWidth);
+
+        buttonProceedImage = new Button("Proceed image");
+        paneSummaryBox.getChildren().add(buttonProceedImage);
+        buttonProceedImage.setMinWidth(buttonProceedImageWidth);
+        buttonProceedImage.setMaxWidth(buttonProceedImageWidth);
+        buttonProceedImage.setMinHeight(buttonProceedImageHeight);
+        buttonProceedImage.setMaxHeight(buttonProceedImageHeight);
+        buttonProceedImage.setOnAction(this::handle);
 
         paneButtonBox.setPadding(new Insets(padding, padding, padding, padding));
-        paneTextFieldsBox.setPadding(new Insets(padding, padding, padding, 0));
+        paneTextFieldsBox.setPadding(new Insets(padding, padding, padding, padding));
+        paneSummaryBox.setPadding(new Insets(padding, padding, padding, padding));
 
         paneButtonBox.setPadding(new Insets(padding, padding, padding, padding));
 
@@ -172,6 +184,8 @@ public class VisualMusicApplication extends Application implements EventHandler<
             handleButtonLoadFromURL();
         } else if (source == checkScaleDisplayedImage) {
             handleCheckScaleDisplayedImage();
+        } else if (source == buttonProceedImage) {
+            handleButtonProceedImage();
         }
     }
 
@@ -264,6 +278,10 @@ public class VisualMusicApplication extends Application implements EventHandler<
             this.checkScaleDisplayedImage.isSelected() ?
             this.loadedDisplayedImage :
             this.loadedOriginalImage);
+    }
+
+    public void handleButtonProceedImage() {
+
     }
 
     public void changeDisplayedImage(Image image) {
