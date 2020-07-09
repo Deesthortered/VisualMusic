@@ -8,6 +8,7 @@ import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -41,6 +42,7 @@ public class VisualMusicApplication extends Application implements EventHandler<
     private Button buttonOpenFileDialog;
     private TextField textPathToImageFile;
     private TextField textURLToImageFile;
+    private CheckBox checkScaleDisplayedImage;
 
     private ImageView displayedImageView;
 
@@ -110,6 +112,10 @@ public class VisualMusicApplication extends Application implements EventHandler<
         buttonLoadFromURL.setMinWidth(buttonWidth);
         buttonLoadFromURL.setOnAction(this::handle);
 
+        checkScaleDisplayedImage = new CheckBox("Scale image");
+        paneButtonBox.getChildren().add(checkScaleDisplayedImage);
+        checkScaleDisplayedImage.setOnAction(this::handle);
+
         HBox boxFilePath = new HBox();
         paneTextFieldsBox.getChildren().add(boxFilePath);
 
@@ -139,9 +145,6 @@ public class VisualMusicApplication extends Application implements EventHandler<
     private Pane makeShowImagePane() {
         Pane pane = new StackPane();
 
-//        String website = "https://www.w3schools.com/w3css/img_lights.jpg";
-//        Image image = applicationService.getImageByURL(website, false);
-
         displayedImageView = new ImageView(defaultImage);
         pane.getChildren().add(displayedImageView);
 
@@ -167,6 +170,8 @@ public class VisualMusicApplication extends Application implements EventHandler<
             handleButtonLoadFromFile();
         } else if (source == buttonLoadFromURL) {
             handleButtonLoadFromURL();
+        } else if (source == checkScaleDisplayedImage) {
+            handleCheckScaleDisplayedImage();
         }
     }
 
@@ -210,7 +215,10 @@ public class VisualMusicApplication extends Application implements EventHandler<
             this.loadedDisplayedImage = applicationService.getImageFromFile(path, false);
             this.loadedOriginalImage = applicationService.getImageFromFile(path, true);
 
-            changeDisplayedImage(this.loadedDisplayedImage);
+            changeDisplayedImage(
+                    this.checkScaleDisplayedImage.isSelected() ?
+                            this.loadedDisplayedImage :
+                            this.loadedOriginalImage);
 
         } catch (IOException e) {
             Alert alert = new Alert(Alert.AlertType.WARNING);
@@ -237,7 +245,11 @@ public class VisualMusicApplication extends Application implements EventHandler<
             this.loadedDisplayedImage = applicationService.getImageByURL(website, false);
             this.loadedOriginalImage = applicationService.getImageByURL(website, true);
 
-            changeDisplayedImage(this.loadedDisplayedImage);
+            changeDisplayedImage(
+                    this.checkScaleDisplayedImage.isSelected() ?
+                            this.loadedDisplayedImage :
+                            this.loadedOriginalImage);
+
         } catch (Exception e) {
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle("Mistake!");
@@ -245,6 +257,13 @@ public class VisualMusicApplication extends Application implements EventHandler<
             alert.setContentText("Exception message: " + e.getMessage());
             alert.showAndWait();
         }
+    }
+
+    public void handleCheckScaleDisplayedImage() {
+        changeDisplayedImage(
+            this.checkScaleDisplayedImage.isSelected() ?
+            this.loadedDisplayedImage :
+            this.loadedOriginalImage);
     }
 
     public void changeDisplayedImage(Image image) {
