@@ -21,3 +21,9 @@ dependencies {
 test {
     useTestNG()
 }
+
+jar {
+    manifest {
+        attributes 'Main-Class': 'org.visualmusic.VisualMusicApplication'
+    }
+}
