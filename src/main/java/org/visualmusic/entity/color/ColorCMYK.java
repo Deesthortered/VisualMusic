@@ -8,13 +8,13 @@ import lombok.With;
 @EqualsAndHashCode
 public class ColorCMYK {
     @With @Getter
-    private int cyan;    // C
+    private double cyan;    // C: [0, 1]
     @With @Getter
-    private int magenta; // M
+    private double magenta; // M: [0, 1]
     @With @Getter
-    private int yellow;  // Y
+    private double yellow;  // Y: [0, 1]
     @With @Getter
-    private int black;   // K
+    private double black;   // K: [0, 1]
 
     private ColorCMYK() {
     }
@@ -26,7 +26,7 @@ public class ColorCMYK {
         this.black = that.black;
     }
 
-    public ColorCMYK(int c, int m, int y, int k) {
+    public ColorCMYK(double c, double m, double y, double k) {
         this.cyan = c;
         this.magenta = m;
         this.yellow = y;

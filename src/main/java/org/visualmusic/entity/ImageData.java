@@ -2,7 +2,9 @@ package org.visualmusic.entity;
 
 import javafx.scene.image.Image;
 import javafx.scene.image.PixelReader;
+import javafx.scene.paint.Color;
 import org.visualmusic.entity.color.BaseColors;
+import org.visualmusic.entity.color.ColorRGB;
 import org.visualmusic.entity.color.MultiColor;
 
 public class ImageData {
@@ -24,7 +26,9 @@ public class ImageData {
         PixelReader pixelReader = javafxImage.getPixelReader();
         for (int i = 0; i < imageData.getWidth(); i++) {
             for (int j = 0; j < imageData.getHeight(); j++) {
-                imageData.setPixel(i, j, new MultiColor(pixelReader.getColor(i, j)));
+                Color pixel = pixelReader.getColor(i, j);
+                ColorRGB customRGB = new ColorRGB(pixel.getRed(), pixel.getGreen(), pixel.getBlue());
+                imageData.setPixel(i, j, new MultiColor(customRGB));
             }
         }
     }

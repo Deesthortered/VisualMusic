@@ -8,11 +8,11 @@ import lombok.With;
 @EqualsAndHashCode
 public class ColorHSV {
     @With @Getter
-    private int hue;        // H
+    private double hue;        // H: [0, 360)
     @With @Getter
-    private int saturation; // S
+    private double saturation; // S: [0, 1]
     @With @Getter
-    private int value;      // V
+    private double value;      // V: [0, 1]
 
     private ColorHSV() {
     }
@@ -23,7 +23,7 @@ public class ColorHSV {
         this.value = that.value;
     }
 
-    public ColorHSV(int h, int s, int v) {
+    public ColorHSV(double h, double s, double v) {
         this.hue = h;
         this.saturation = s;
         this.value = v;

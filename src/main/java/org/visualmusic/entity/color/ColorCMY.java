@@ -8,11 +8,11 @@ import lombok.With;
 @EqualsAndHashCode
 public class ColorCMY {
     @With @Getter
-    private int cyan;    // C
+    private double cyan;    // C: [0, 1]
     @With @Getter
-    private int magenta; // M
+    private double magenta; // M: [0, 1]
     @With @Getter
-    private int yellow;  // Y
+    private double yellow;  // Y: [0, 1]
 
     private ColorCMY() {
     }
@@ -23,7 +23,7 @@ public class ColorCMY {
         this.yellow = that.yellow;
     }
 
-    public ColorCMY(int c, int m, int y) {
+    public ColorCMY(double c, double m, double y) {
         this.cyan = c;
         this.magenta = m;
         this.yellow = y;

@@ -1,9 +1,12 @@
 package org.visualmusic.entity.color;
 
-import javafx.scene.paint.Color;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NonNull;
+
+import static com.sun.javafx.util.Utils.RGBtoHSB;
+import static com.sun.javafx.util.Utils.HSBtoRGB;
+
 
 @EqualsAndHashCode
 public class MultiColor {
@@ -20,72 +23,103 @@ public class MultiColor {
     }
 
     public MultiColor(@NonNull MultiColor that) {
-        this.colorRGB = new ColorRGB(that.colorRGB);
-        this.colorCMY = new ColorCMY(that.colorCMY);
-        this.colorCMYK = new ColorCMYK(that.colorCMYK);
-        this.colorHSV = new ColorHSV(that.colorHSV);
+        this.colorRGB  = that.colorRGB;
+        this.colorCMY  = that.colorCMY;
+        this.colorCMYK = that.colorCMYK;
+        this.colorHSV  = that.colorHSV;
     }
 
     public MultiColor(@NonNull ColorRGB inputColor) {
-        this.colorRGB = new ColorRGB(inputColor);
-        this.colorCMY = new ColorCMY(MultiColor.fromRGBtoCMY(inputColor));
-        this.colorCMYK = new ColorCMYK(MultiColor.fromRGBtoCMYK(inputColor));
-        this.colorHSV = new ColorHSV(MultiColor.fromRGBtoHSV(inputColor));
+        this.colorRGB  = inputColor;
+        this.colorCMY  = MultiColor.fromRGBtoCMY(inputColor);
+        this.colorCMYK = MultiColor.fromRGBtoCMYK(inputColor);
+        this.colorHSV  = MultiColor.fromRGBtoHSV(inputColor);
     }
 
     public MultiColor(@NonNull ColorCMY inputColor) {
-        this.colorRGB = new ColorRGB(MultiColor.fromCMYtoRGB(inputColor));
-        this.colorCMY = new ColorCMY(MultiColor.fromRGBtoCMY(this.colorRGB));
-        this.colorCMYK = new ColorCMYK(MultiColor.fromRGBtoCMYK(this.colorRGB));
-        this.colorHSV = new ColorHSV(MultiColor.fromRGBtoHSV(this.colorRGB));
+        this.colorRGB  = MultiColor.fromCMYtoRGB(inputColor);
+        this.colorCMY  = MultiColor.fromRGBtoCMY(this.colorRGB);
+        this.colorCMYK = MultiColor.fromRGBtoCMYK(this.colorRGB);
+        this.colorHSV  = MultiColor.fromRGBtoHSV(this.colorRGB);
     }
 
     public MultiColor(@NonNull ColorCMYK inputColor) {
-        this.colorRGB = new ColorRGB(MultiColor.fromCMYKtoRGB(inputColor));
-        this.colorCMY = new ColorCMY(MultiColor.fromRGBtoCMY(this.colorRGB));
-        this.colorCMYK = new ColorCMYK(MultiColor.fromRGBtoCMYK(this.colorRGB));
-        this.colorHSV = new ColorHSV(MultiColor.fromRGBtoHSV(this.colorRGB));
+        this.colorRGB  = MultiColor.fromCMYKtoRGB(inputColor);
+        this.colorCMY  = MultiColor.fromRGBtoCMY(this.colorRGB);
+        this.colorCMYK = MultiColor.fromRGBtoCMYK(this.colorRGB);
+        this.colorHSV  = MultiColor.fromRGBtoHSV(this.colorRGB);
     }
 
     public MultiColor(@NonNull ColorHSV inputColor) {
-        this.colorRGB = new ColorRGB(MultiColor.fromHSVtoRGB(inputColor));
-        this.colorCMY = new ColorCMY(MultiColor.fromRGBtoCMY(this.colorRGB));
-        this.colorCMYK = new ColorCMYK(MultiColor.fromRGBtoCMYK(this.colorRGB));
-        this.colorHSV = new ColorHSV(MultiColor.fromRGBtoHSV(this.colorRGB));
-    }
-
-    public MultiColor(@NonNull Color javafxColor) {
-        // Need to convert interval of values
-        javafxColor.getRed();
-        javafxColor.getGreen();
-        javafxColor.getBlue();
-
+        this.colorRGB  = MultiColor.fromHSVtoRGB(inputColor);
+        this.colorCMY  = MultiColor.fromRGBtoCMY(this.colorRGB);
+        this.colorCMYK = MultiColor.fromRGBtoCMYK(this.colorRGB);
+        this.colorHSV  = MultiColor.fromRGBtoHSV(this.colorRGB);
     }
 
 
     public static ColorCMY fromRGBtoCMY(@NonNull ColorRGB inputColor) {
-        return new ColorCMY(1, 1, 1);
+        double c = 1.0 - inputColor.getRed();
+        double m = 1.0 - inputColor.getGreen();
+        double y = 1.0 - inputColor.getBlue();
+
+        return new ColorCMY(c, m, y);
     }
 
     public static ColorRGB fromCMYtoRGB(@NonNull ColorCMY inputColor) {
-        return new ColorRGB(1, 1, 1);
+        double r = 1.0 - inputColor.getCyan();
+        double g = 1.0 - inputColor.getMagenta();
+        double b = 1.0 - inputColor.getYellow();
+
+        return new ColorRGB(r, g, b);
     }
 
 
     public static ColorCMYK fromRGBtoCMYK(@NonNull ColorRGB inputColor) {
-        return new ColorCMYK(1, 1, 1, 1);
+        double min = Math.min(1.0 - inputColor.getRed(),
+                     Math.min(1.0 - inputColor.getGreen(),
+                              1.0 - inputColor.getBlue()));
+
+        double c = 1.0 - inputColor.getRed()   - min;
+        double m = 1.0 - inputColor.getGreen() - min;
+        double y = 1.0 - inputColor.getBlue()  - min;
+        double k = min;
+
+        return new ColorCMYK(c, m, y, k);
     }
 
     public static ColorRGB fromCMYKtoRGB(@NonNull ColorCMYK inputColor) {
-        return new ColorRGB(1, 1, 1);
+        double r = 1.0 - (inputColor.getCyan()    + inputColor.getBlack());
+        double g = 1.0 - (inputColor.getMagenta() + inputColor.getBlack());
+        double b = 1.0 - (inputColor.getYellow()  + inputColor.getBlack());
+
+        return new ColorRGB(r, g, b);
     }
 
 
     public static ColorHSV fromRGBtoHSV(@NonNull ColorRGB inputColor) {
-        return new ColorHSV(1, 1, 1);
+        double r = inputColor.getRed();
+        double g = inputColor.getGreen();
+        double b = inputColor.getBlue();
+
+        double[] hsv = RGBtoHSB(r, g, b);
+        double h = hsv[0];
+        double s = hsv[1];
+        double v = hsv[2];
+
+        return new ColorHSV(h, s, v);
     }
 
     public static ColorRGB fromHSVtoRGB(@NonNull ColorHSV inputColor) {
-        return new ColorRGB(1, 1, 1);
+        double h = inputColor.getHue();
+        double s = inputColor.getSaturation();
+        double v = inputColor.getValue();
+
+        double[] rgb = HSBtoRGB(h, s, v);
+        double r = rgb[0];
+        double g = rgb[1];
+        double b = rgb[2];
+
+        return new ColorRGB(r, g, b);
     }
 }

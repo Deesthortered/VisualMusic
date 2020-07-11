@@ -8,11 +8,11 @@ import lombok.With;
 @EqualsAndHashCode
 public class ColorRGB {
     @With @Getter
-    private int red;   // R
+    private double red;   // R: [0, 1]
     @With @Getter
-    private int green; // G
+    private double green; // G: [0, 1]
     @With @Getter
-    private int blue;  // B
+    private double blue;  // B: [0, 1]
 
     private ColorRGB() {
     }
@@ -23,7 +23,7 @@ public class ColorRGB {
         this.blue = that.blue;
     }
 
-    public ColorRGB(int r, int g, int b) {
+    public ColorRGB(double r, double g, double b) {
         this.red = r;
         this.green = g;
         this.blue = b;
