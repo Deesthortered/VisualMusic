@@ -1,14 +1,12 @@
 package org.visualmusic.entity.color;
 
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NonNull;
+import lombok.*;
 
 import static com.sun.javafx.util.Utils.RGBtoHSB;
 import static com.sun.javafx.util.Utils.HSBtoRGB;
 
 
-@EqualsAndHashCode
+@EqualsAndHashCode @ToString
 public class MultiColor {
     @Getter
     private ColorRGB colorRGB;

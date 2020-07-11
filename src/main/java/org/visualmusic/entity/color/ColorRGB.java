@@ -1,11 +1,10 @@
 package org.visualmusic.entity.color;
 
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NonNull;
-import lombok.With;
+import lombok.*;
 
-@EqualsAndHashCode
+import java.util.Arrays;
+
+@ToString
 public class ColorRGB {
     @With @Getter
     private double red;   // R: [0, 1]
@@ -24,8 +23,42 @@ public class ColorRGB {
     }
 
     public ColorRGB(double r, double g, double b) {
+        validateInputs(r, g, b);
         this.red = r;
         this.green = g;
         this.blue = b;
+    }
+
+    @Override
+    public int hashCode() {
+        return Arrays.hashCode(new Object[] {
+                red,
+                green,
+                blue
+        });
+    }
+
+    @Override
+    public boolean equals(Object that) {
+        if (this == that)
+            return true;
+        if (that == null)
+            return false;
+        if (getClass() != that.getClass())
+            return false;
+        ColorRGB thatColor = (ColorRGB) that;
+        return Math.abs(this.red   - thatColor.red)   < BaseColors.epsilon &&
+               Math.abs(this.green - thatColor.green) < BaseColors.epsilon &&
+               Math.abs(this.blue  - thatColor.blue)  < BaseColors.epsilon;
+    }
+
+    private void validateInputs(double r, double g, double b) {
+        if (r < 0 || r > 1 || g < 0 || g > 1 || b < 0 || b > 1)
+            throw new IllegalArgumentException(
+                    "RGB: Values are not in the needed range: " +
+                    "r = " + r + ", " +
+                    "g = " + g + ", " +
+                    "b = " + b +
+                    ".");
     }
 }
